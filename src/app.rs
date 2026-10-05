@@ -1186,6 +1186,11 @@ impl eframe::App for AirCardApp {
                                 );
                                 ui.selectable_value(
                                     &mut next_language,
+                                    Language::Spanish,
+                                    language.option_label(Language::Spanish),
+                                );
+                                ui.selectable_value(
+                                    &mut next_language,
                                     Language::SimplifiedChinese,
                                     language.option_label(Language::SimplifiedChinese),
                                 );
