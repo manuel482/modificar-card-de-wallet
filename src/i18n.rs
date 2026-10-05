@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Language {
     English,
+    Spanish,
     SimplifiedChinese,
 }
 
@@ -32,6 +33,8 @@ impl Language {
 
         if system_locale.starts_with("zh") {
             Self::SimplifiedChinese
+        } else if system_locale.starts_with("es") {
+            Self::Spanish
         } else {
             Self::English
         }
@@ -52,6 +55,156 @@ impl Language {
     pub fn text<'a>(self, source: &'a str) -> &'a str {
         if self == Self::English {
             return source;
+        }
+
+
+        if self == Self::Spanish {
+            return match source {
+                "Wallet" => "Wallet",
+                "Passcode" => "Código",
+                "Help" => "Ayuda",
+                "Refresh" => "Actualizar",
+                "Auto (USB preferred)" => "Automático (USB preferido)",
+                "USB only" => "Solo USB",
+                "WiFi only" => "Solo WiFi",
+                "No device" => "Sin dispositivo",
+                "Ready" => "Listo",
+                "Unavailable" => "No disponible",
+                "Logs" => "Registros",
+                "Logs [x]" => "Registros [x]",
+                "Copy Logs" => "Copiar registros",
+                "Save to File..." => "Guardar en archivo...",
+                "Clear" => "Limpiar",
+                "No events logged yet." => "Aún no hay eventos registrados.",
+                "Language" => "Idioma",
+                "English" => "Inglés",
+                "Spanish" => "Español",
+                "Simplified Chinese" => "Chino simplificado",
+                "Language changed." => "Idioma cambiado.",
+                "Transport mode" => "Modo de conexión",
+                "entries" => "entradas",
+                "Ready. Connect iPhone via USB or paired WiFi and unlock it." => "Listo. Conecta el iPhone por USB o WiFi emparejado y desbloquéalo.",
+                "No iPhone connected via USB or paired WiFi." => "No hay ningún iPhone conectado por USB o WiFi emparejado.",
+                "Please select a connected iPhone." => "Selecciona un iPhone conectado.",
+                "Disconnect the USB cable and refresh to guarantee the full AirTraffic path uses WiFi." => "Desconecta el cable USB y actualiza para garantizar que toda la conexión AirTraffic use WiFi.",
+                "Please enter or scan a target card hash." => "Introduce o escanea el hash de la tarjeta.",
+                "Please choose a card skin image first." => "Primero selecciona una imagen para la tarjeta.",
+                "Crop position updated." => "Posición de recorte actualizada.",
+                "Scanning syslog... Open Wallet or tap your card on iPhone." => "Escaneando syslog... Abre Wallet o toca tu tarjeta en el iPhone.",
+                "Syslog scanning stopped." => "Escaneo de syslog detenido.",
+                "Writing card skin to iPhone..." => "Aplicando diseño de tarjeta al iPhone...",
+                "Please select a .passthm theme file first." => "Primero selecciona un archivo de tema .passthm.",
+                "Writing passcode theme buttons..." => "Aplicando botones del tema de código...",
+                "Syslog scan finished" => "Escaneo de syslog finalizado",
+                "Card skin successfully flashed! Force quit Wallet on iPhone and reopen it." => "¡Diseño de tarjeta aplicado correctamente! Fuerza el cierre de Wallet en el iPhone y vuelve a abrirlo.",
+                "Passcode theme applied! Lock your iPhone to view the new keypad." => "¡Tema de código aplicado! Bloquea el iPhone para ver el nuevo teclado.",
+                "Card skin updated successfully!" => "¡Diseño de tarjeta actualizado correctamente!",
+                "Restoring original card face..." => "Restaurando diseño original de la tarjeta...",
+                "Restoring original card artwork..." => "Restaurando imagen original de la tarjeta...",
+                "Clearing .cache cache..." => "Limpiando caché .cache...",
+                "Clearing .pkcache cache..." => "Limpiando caché .pkcache...",
+                "Original card face restored successfully!" => "¡Diseño original de la tarjeta restaurado correctamente!",
+                "Original card face restored. Force close Wallet and reopen it." => "Diseño original restaurado. Fuerza el cierre de Wallet y vuelve a abrirlo.",
+                "Original card backup not found." => "No se encontró la copia de seguridad de la tarjeta original.",
+                "Apply a card skin once to create an original backup." => "Aplica un diseño una vez para crear una copia del original.",
+                "Passcode theme applied successfully!" => "¡Tema de código aplicado correctamente!",
+                "Failed to parse theme:" => "No se pudo procesar el tema:",
+                "Card captured" => "Tarjeta capturada",
+                "Loaded" => "Cargado",
+                "target:" => "objetivo:",
+                "lang:" => "idioma:",
+                "bold:" => "negrita:",
+                "ON" => "ACTIVADO",
+                "OFF" => "DESACTIVADO",
+                "Error: " => "Error: ",
+                "Found" => "Encontrados",
+                "connected device(s); transport mode:" => "dispositivo(s) conectado(s); modo de conexión:",
+                "Could not enumerate devices:" => "No se pudieron enumerar los dispositivos:",
+                "Selected iPhone has no" => "El iPhone seleccionado no tiene conexión",
+                "connection. Refresh devices or change transport mode." => "disponible. Actualiza los dispositivos o cambia el modo de conexión.",
+                "Scanning syslog..." => "Escaneando syslog...",
+                "Open Wallet on iPhone and tap your card" => "Abre Wallet en el iPhone y toca tu tarjeta",
+                "Stop" => "Detener",
+                "Scan" => "Escanear",
+                "Card Configuration" => "Configuración de tarjeta",
+                "Target your card and choose replacement artwork" => "Selecciona tu tarjeta y elige la imagen de reemplazo",
+                "Target Card Hash" => "Hash de la tarjeta",
+                "Base64 pass hash..." => "Hash de tarjeta en Base64...",
+                "Saved cards" => "Tarjetas guardadas",
+                "Select..." => "Seleccionar...",
+                "Card Skin Artwork" => "Diseño de la tarjeta",
+                "PNG, JPG, WebP - auto-scaled to 1536x969" => "PNG, JPG, WebP - escalado automáticamente a 1536x969",
+                "Drag inside the preview to reposition the crop." => "Arrastra dentro de la vista previa para ajustar el recorte.",
+                "Choose Image..." => "Elegir imagen...",
+                "Export PNG" => "Exportar PNG",
+                "Write to iPhone" => "Escribir en iPhone",
+                "Apply Card Skin" => "Aplicar diseño",
+                "Restore Original" => "Restaurar original",
+                "connect iPhone" => "conectar iPhone",
+                "choose available transport" => "elegir conexión disponible",
+                "enter card hash" => "introducir hash de tarjeta",
+                "choose image" => "elegir imagen",
+                "select theme" => "seleccionar tema",
+                "Need: " => "Falta: ",
+                "Wallet Preview" => "Vista previa de Wallet",
+                "1536 x 969 px pass canvas" => "Lienzo de tarjeta de 1536 x 969 px",
+                "No artwork loaded" => "No hay imagen cargada",
+                "No image" => "Sin imagen",
+                "After applying, force close Apple Wallet and reopen it." => "Después de aplicar, fuerza el cierre de Apple Wallet y vuelve a abrirlo.",
+                "Passcode Theme" => "Tema del código de bloqueo",
+                "Custom lockscreen keypad from Cowabunga or Nugget" => "Teclado de bloqueo personalizado de Cowabunga o Nugget",
+                "Theme Package" => "Paquete de tema",
+                "Choose a .passthm archive containing dialer artwork" => "Selecciona un archivo .passthm que contenga las imágenes del teclado",
+                "Choose .passthm..." => "Elegir .passthm...",
+                "assets" => "recursos",
+                "Target iOS Cache" => "Caché de iOS objetivo",
+                "Select cache format based on connected iOS version" => "Selecciona el formato de caché según la versión de iOS conectada",
+                "Auto (TelephonyUI-10)" => "Automático (TelephonyUI-10)",
+                "TelephonyUI-10 (iOS 18+)" => "TelephonyUI-10 (iOS 18+)",
+                "TelephonyUI-9 (iOS 16-17)" => "TelephonyUI-9 (iOS 16-17)",
+                "TelephonyUI-8 (Legacy)" => "TelephonyUI-8 (Antiguo)",
+                "Keypad Language" => "Idioma del teclado",
+                "Subtext alphabet layout (English, Russian, Ukrainian, Japanese, or Universal)" => "Distribución de letras secundarias (inglés, ruso, ucraniano, japonés o universal)",
+                "Russian" => "Ruso",
+                "Ukrainian" => "Ucraniano",
+                "Japanese" => "Japonés",
+                "All Languages (Universal)" => "Todos los idiomas (Universal)",
+                "Bold Text (iOS Accessibility)" => "Texto en negrita (Accesibilidad de iOS)",
+                "Generates *-bold.png for devices with Bold Text turned ON in iPhone Settings -> Display" => "Genera *-bold.png para dispositivos con Texto en negrita activado en Ajustes del iPhone -> Pantalla",
+                "Apply Passcode Theme" => "Aplicar tema de código",
+                "Keypad Preview" => "Vista previa del teclado",
+                "Dialer button artwork" => "Diseño de botones del teclado",
+                "No theme loaded" => "No hay tema cargado",
+                "3x4 Keypad" => "Teclado 3x4",
+                "No theme" => "Sin tema",
+                "After applying, lock your iPhone to see the new keypad." => "Después de aplicar, bloquea el iPhone para ver el nuevo teclado.",
+                "Setup & Card Hash Guide" => "Guía de configuración y hash de tarjeta",
+                "Everything you need to connect and capture your card" => "Todo lo necesario para conectar y capturar tu tarjeta",
+                "Prerequisites" => "Requisitos previos",
+                "- 64-bit iTunes or Apple Mobile Device Support installed" => "- iTunes de 64 bits o Apple Mobile Device Support instalado",
+                "- First-time setup: connect by USB and tap \"Trust this Computer\"" => "- Primera configuración: conecta por USB y pulsa \"Confiar en este ordenador\"",
+                "- WiFi: enable WiFi sync, then use the same local network" => "- WiFi: activa la sincronización WiFi y usa la misma red local",
+                "- Select Auto, USB only, or WiFi only in the top bar" => "- Selecciona Automático, Solo USB o Solo WiFi en la barra superior",
+                "Finding Your Card Hash" => "Cómo encontrar el hash de tu tarjeta",
+                "1. Click \"Scan\" in the Wallet tab" => "1. Pulsa \"Escanear\" en la pestaña Wallet",
+                "2. Open Apple Wallet on your iPhone" => "2. Abre Apple Wallet en tu iPhone",
+                "3. Tap the card you want to customize" => "3. Toca la tarjeta que deseas personalizar",
+                "4. AirCard captures the pass hash automatically" => "4. La aplicación captura automáticamente el hash de la tarjeta",
+                "5. Click \"Stop\" once detected" => "5. Pulsa \"Detener\" cuando sea detectada",
+                "Activation & Theme Guide" => "Guía de aplicación y temas",
+                "Applying skins and dialer keypad packages" => "Aplicación de diseños y paquetes de teclado",
+                "Activating Apple Wallet Skin" => "Aplicar diseño de Apple Wallet",
+                "1. Click \"Apply Card Skin\" and wait for completion" => "1. Pulsa \"Aplicar diseño\" y espera a que termine",
+                "2. Open App Switcher on iPhone (swipe up from bottom)" => "2. Abre el selector de apps del iPhone (desliza desde abajo)",
+                "3. Force close Apple Wallet by swiping up on it" => "3. Fuerza el cierre de Apple Wallet deslizándolo hacia arriba",
+                "4. Reopen Wallet - your new skin appears!" => "4. Vuelve a abrir Wallet: ¡aparecerá tu nuevo diseño!",
+                "Passcode Themes (.passthm)" => "Temas de código (.passthm)",
+                "- Compatible with Cowabunga & Nugget theme packages" => "- Compatible con paquetes de temas Cowabunga y Nugget",
+                "- iOS 18+: Select \"Auto (TelephonyUI-10)\"" => "- iOS 18+: selecciona \"Automático (TelephonyUI-10)\"",
+                "- iOS 16-17: Select \"TelephonyUI-9\"" => "- iOS 16-17: selecciona \"TelephonyUI-9\"",
+                "- Lock screen to verify your updated keypad artwork" => "- Bloquea la pantalla para comprobar el nuevo diseño del teclado",
+                _ => source,
+            };
         }
 
         match source {
@@ -204,8 +357,13 @@ impl Language {
     pub fn option_label(self, option: Self) -> &'static str {
         match (self, option) {
             (Self::English, Self::English) => "English",
+            (Self::English, Self::Spanish) => "Spanish",
             (Self::English, Self::SimplifiedChinese) => "Simplified Chinese",
+            (Self::Spanish, Self::English) => "Inglés",
+            (Self::Spanish, Self::Spanish) => "Español",
+            (Self::Spanish, Self::SimplifiedChinese) => "Chino simplificado",
             (Self::SimplifiedChinese, Self::English) => "英语",
+            (Self::SimplifiedChinese, Self::Spanish) => "西班牙语",
             (Self::SimplifiedChinese, Self::SimplifiedChinese) => "简体中文",
         }
     }
@@ -238,10 +396,23 @@ mod tests {
     }
 
     #[test]
+    fn spanish_translation_has_english_fallback() {
+        assert_eq!(Language::Spanish.text("Help"), "Ayuda");
+        assert_eq!(
+            Language::Spanish.text("unknown string"),
+            "unknown string"
+        );
+    }
+
+    #[test]
     fn language_option_labels_follow_current_language() {
         assert_eq!(
             Language::English.option_label(Language::SimplifiedChinese),
             "Simplified Chinese"
+        );
+        assert_eq!(
+            Language::Spanish.option_label(Language::Spanish),
+            "Español"
         );
         assert_eq!(
             Language::SimplifiedChinese.option_label(Language::SimplifiedChinese),
