@@ -378,7 +378,7 @@ fn settings_path() -> PathBuf {
     let local_app_data = std::env::var("LOCALAPPDATA")
         .unwrap_or_else(|_| r"C:\Users\Default\AppData\Local".to_string());
     PathBuf::from(local_app_data)
-        .join("AirCard")
+        .join("AplicacionPruebaBeta")
         .join("settings.json")
 }
 
