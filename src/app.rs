@@ -179,13 +179,19 @@ impl AirCardApp {
         match list_connected_devices() {
             Ok(devs) => {
                 self.devices = devs;
-                let selection_still_exists = self.selected_udid.as_ref().is_some_and(|selected| {
-                    self.devices
-                        .iter()
-                        .any(|device| device.udid.eq_ignore_ascii_case(selected))
+                let selection_still_usable = self.selected_udid.as_ref().is_some_and(|selected| {
+                    self.devices.iter().any(|device| {
+                        device.udid.eq_ignore_ascii_case(selected)
+                            && device.supports(self.connection_mode)
+                    })
                 });
-                if !selection_still_exists && !self.devices.is_empty() {
-                    self.selected_udid = Some(self.devices[0].udid.clone());
+                if !selection_still_usable && !self.devices.is_empty() {
+                    self.selected_udid = self
+                        .devices
+                        .iter()
+                        .find(|device| device.supports(self.connection_mode))
+                        .or_else(|| self.devices.first())
+                        .map(|device| device.udid.clone());
                 }
                 if self.devices.is_empty() {
                     self.selected_udid = None;
@@ -228,8 +234,7 @@ impl AirCardApp {
                     return false;
                 }
                 if self.connection_mode == ConnectionMode::Wifi {
-                    return device.has_transport(DeviceTransport::Wifi)
-                        && !device.has_transport(DeviceTransport::Usb);
+                    return device.has_transport(DeviceTransport::Wifi);
                 }
                 device.supports(self.connection_mode)
             })
@@ -243,31 +248,17 @@ impl AirCardApp {
             return false;
         }
         if !self.selected_transport_available() {
-            let wifi_has_usb_attached = self.connection_mode == ConnectionMode::Wifi
-                && self.selected_udid.as_ref().is_some_and(|selected| {
-                    self.devices.iter().any(|device| {
-                        device.udid.eq_ignore_ascii_case(selected)
-                            && device.has_transport(DeviceTransport::Wifi)
-                            && device.has_transport(DeviceTransport::Usb)
-                    })
-                });
             self.add_log(format!(
                 "{} failed: Selected device is unavailable in {} mode.",
                 operation,
                 self.connection_mode.label()
             ));
-            self.status_msg = if wifi_has_usb_attached {
-                self.language
-                    .text("Disconnect the USB cable and refresh to guarantee the full AirTraffic path uses WiFi.")
-                    .to_string()
-            } else {
-                format!(
-                    "{} {} {}",
-                    self.language.text("Selected iPhone has no"),
-                    self.language.text(self.connection_mode.label()),
-                    self.language.text("connection. Refresh devices or change transport mode.")
-                )
-            };
+            self.status_msg = format!(
+                "{} {} {}",
+                self.language.text("Selected iPhone has no"),
+                self.language.text(self.connection_mode.label()),
+                self.language.text("connection. Refresh devices or change transport mode.")
+            );
             return false;
         }
         true
@@ -1078,6 +1069,15 @@ impl eframe::App for AirCardApp {
                                 language.text("Transport mode"),
                                 language.text(self.connection_mode.label())
                             );
+
+                            // Apple Mobile Device Service exposes paired iPhones on the
+                            // local network as "Network" usbmux devices. Refresh as soon
+                            // as WiFi mode is selected so a trusted iPhone on the same
+                            // WiFi/LAN is picked automatically without requiring USB.
+                            if self.connection_mode == ConnectionMode::Wifi && self.apple_ready {
+                                self.add_log("WiFi mode: searching for paired iPhones on the same local network...");
+                                self.refresh_devices();
+                            }
                         }
 
                         ui.add_space(6.0);
